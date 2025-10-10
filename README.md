@@ -5,6 +5,7 @@ A simple, colorful CSS-only music equalizer animation. Each bar animates with a 
 ## Features
 - Pure HTML + CSS (no JavaScript)
 - Responsive-friendly container with overflow clipping
+- Responsive: switches to a flex layout on small screens with adjusted sizes
 - Seven animated bars with independent keyframes (`m1`–`m7`)
 - Smooth, infinite looping with varying durations
 - Easy to customize colors, timings, and text
@@ -42,6 +43,7 @@ Optionally, use a lightweight server for auto-reload while editing:
 ## Notes
 - The current layout uses absolute-like spacing with negative `margin-top` to stack bars in a single row. You can switch to CSS Grid or Flexbox if you prefer cleaner horizontal layout.
 - The container is fixed width/height in rem; for true responsiveness, consider using relative units and media queries.
+	- Implemented media queries: ≤768px uses flex with spacing; ≤480px tightens gaps and sizes.
 
 ## Tech stack
 - HTML5
