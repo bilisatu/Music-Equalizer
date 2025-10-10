@@ -10,7 +10,9 @@ A simple, colorful CSS-only music equalizer animation. Each bar animates with a 
 - Easy to customize colors, timings, and text
 
 ## Demo
-Open `index.html` in your browser.
+Live demo: https://bilisatu.github.io/Music-Equalizer/
+
+Local preview: open `index.html` in your browser.
 
 Optionally, use a lightweight server for auto-reload while editing:
 - VS Code extension: Live Server
