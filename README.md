@@ -1,59 +1,54 @@
-# Music Equalizer Animation
 
-A simple, colorful CSS-only music equalizer animation. Each bar animates with a different speed and color, spelling "SAFRAEL" while bouncing to create a lively equalizer effect.
+
+# Music Equalizer
+
+A modern, feature-rich web audio equalizer and visualizer. Play, tweak, and visualize your music or microphone input with a beautiful, responsive UI.
 
 ## Features
-- Pure HTML + CSS (no JavaScript)
-- Responsive-friendly container with overflow clipping
-- Responsive: switches to a flex layout on small screens with adjusted sizes
-- Seven animated bars with independent keyframes (`m1`–`m7`)
-- Smooth, infinite looping with varying durations
-- Easy to customize colors, timings, and text
 
-## Demo
-Live demo: https://bilisatu.github.io/Music-Equalizer/
+- **10-band Equalizer**: Drag sliders or pick from presets (Rock, Pop, Jazz, etc.)
+- **Audio Visualizer**: Bars and radial spectrum modes, waveform oscilloscope, and animated particles
+- **Playlist Support**: Load multiple audio files, auto-advance, and click to play any track
+- **Drag & Drop**: Instantly load audio files by dropping them onto the page
+- **Microphone Input**: Route your mic through the EQ and visualizer (toggle with one click)
+- **Bass Boost & Reverb**: Enhance your sound with a single button
+- **Keyboard Shortcuts**: Space (play/pause), F (fullscreen), arrows (seek/volume), 1–0 (presets)
+- **Responsive Design**: Looks great on desktop and mobile
 
-Local preview: open `index.html` in your browser.
+## Usage
 
-Optionally, use a lightweight server for auto-reload while editing:
-- VS Code extension: Live Server
-- Or run any local static server
+1. **Open `index.html` in your browser** (or run a local server for best results)
+2. **Load audio**: Click "Choose audio" or drag files onto the page
+3. **Tweak**: Adjust EQ, try presets, enable bass/reverb, or switch visualizer modes
+4. **Playlist**: Select multiple files to build a playlist, or click tracks to play
+5. **Mic**: Click "Mic" to use your microphone as the audio source
+
+## Local Development
+
+To run locally with a static server (recommended for full features):
+
+```
+npx http-server -p 5501 -c-1
+```
+Then open [http://127.0.0.1:5501](http://127.0.0.1:5501) in your browser.
 
 ## Project structure
 ```
 .
-├── index.html       # Markup: heading + .music container with 7 bars
-├── style.css        # Styles + keyframe animations m1–m7
+├── index.html       # Markup
+├── style.css        # Styles
+├── script.js        # App logic
 ├── LICENSE          # Project license (MIT)
 └── README.md        # This file
 ```
 
-## How to run
-1. Download/clone this folder.
-2. Open the folder in VS Code.
-3. Open `index.html` in a browser (double-click), or right‑click in VS Code and choose "Open with Live Server" if you have the extension.
-
-## Customize
-- Text on bars: Edit the letters inside the `.m1`–`.m7` divs in `index.html`.
-- Colors: Tweak the background colors in each `@keyframes` set in `style.css`.
-- Speed: Change the `animation: mX ease-in-out <duration>s infinite;` duration per bar.
-- Bar size/spacing: Adjust `.music` size and each `.mX` `width`, `height`, `margin-left`, and `margin-top`.
-- Radius: Update `.m1, .m2, .m3, .m4, .m5, .m6, .m7 { border-radius: ... }`.
-
 ## Notes
-- The current layout uses absolute-like spacing with negative `margin-top` to stack bars in a single row. You can switch to CSS Grid or Flexbox if you prefer cleaner horizontal layout.
-- The container is fixed width/height in rem; for true responsiveness, consider using relative units and media queries.
-	- Implemented media queries: ≤768px uses flex with spacing; ≤480px tightens gaps and sizes.
+- Browsers require a user gesture to start/resume audio processing; click Play to enable the audio engine.
+- If a file won’t play, it’s usually a codec support issue in the browser.
 
-## Tech stack
-- HTML5
-- CSS3 animations and keyframes
-
-## Credits
-Created by SAFRAEL.
 
 ## Author
-SAFRAEL
+Created by **Safraeel**
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+MIT — see [LICENSE](./LICENSE).
