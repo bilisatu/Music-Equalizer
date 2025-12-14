@@ -1,21 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Music Anime</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Music Equalizer</title>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <h1>Music Equalizer</h1>
-        <div class="music">
-            <div class="m1">S</div>
-            <div class="m2">A</div>
-            <div class="m3">F</div>
-            <div class="m4">R</div>
-            <div class="m5">A</div>
-            <div class="m6">E</div>
-            <div class="m7">L</div>
+        <div class="wrap">
+            <header>
+                <div>
+                    <h1 class="title">Music Equalizer</h1>
+                    <p class="subtitle">
+                        10-band EQ, presets, bass boost + reverb, dual visualizers, waveform, and shortcuts.
+                    </p>
+                </div>
+                <div class="hint">
+                    Shortcuts:
+                    <kbd>Space</kbd>Play/Pause <kbd>F</kbd>Fullscreen <kbd>←</kbd>/<kbd>→</kbd>Seek <kbd>↑</kbd>/<kbd>↓</kbd>Volume
+                    <kbd>1</kbd>…<kbd>0</kbd>Presets
+                </div>
+            </header>
+
+            <main class="grid">
+                <section class="panel">
+                    <div class="panel-body">
+                        <div class="topbar">
+                            <div class="file-pill">
+                                <div class="file-left">
+                                    <div class="file-label">Loaded file</div>
+                                    <div class="file-name" id="fileName">No file selected</div>
+                                    <div class="file-meta" id="fileMeta"></div>
+                                </div>
+                                <div class="file-input">
+                                    <input id="file" type="file" accept="audio/*" multiple />
+                                    <button class="btn btn-accent" id="pick" type="button">Choose audio</button>
+                                </div>
+                            </div>
+                            <button class="btn play" id="play" disabled aria-label="Play">
+                                <svg id="playIcon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M8 5v14l11-7z"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="controls">
+                            <div class="seek">
+                                <div class="seek-top">
+                                    <span class="badge"><strong>EQ</strong> + Visualizer</span>
+                                    <span class="badge" id="ctxState">Audio: <strong>idle</strong></span>
+                                </div>
+
+                                <div class="row">
+                                    <span class="label">Seek</span>
+                                    <input id="seek" class="range" type="range" min="0" max="1000" value="0" step="1" disabled />
+                                    <span class="time" id="time">0:00 / 0:00</span>
+                                </div>
+
+                                <div class="volume">
+                                    <span class="label">Volume / Preamp</span>
+                                    <input id="volume" class="range" type="range" min="0" max="200" value="100" step="1" />
+                                    <span class="time" id="volLabel">100%</span>
+                                </div>
+
+                                <div class="toolbar">
+                                    <div class="toolbar-row">
+                                        <span class="label">Presets</span>
+                                        <select id="preset" class="select" aria-label="EQ preset"></select>
+                                    </div>
+                                    <div class="toolbar-row">
+                                        <div class="toggles">
+                                            <button class="toggle" id="loop" type="button">Loop</button>
+                                            <button class="toggle" id="bass" type="button">Bass Boost</button>
+                                            <button class="toggle" id="reverb" type="button">Reverb</button>
+                                            <button class="toggle" id="vizMode" type="button">Visualizer: Bars</button>
+                                            <button class="toggle" id="oscToggle" type="button">Waveform</button>
+                                            <button class="toggle" id="mic" type="button">Mic</button>
+                                            <button class="toggle" id="fs" type="button">Fullscreen</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="message" id="msg"></div>
+
+                                <div class="playlist" id="playlist" aria-label="Playlist" hidden>
+                                    <div class="playlist-head">
+                                        <div class="playlist-title">Playlist</div>
+                                        <div class="playlist-meta" id="playlistMeta">0 tracks</div>
+                                    </div>
+                                    <div class="playlist-list" id="playlistList"></div>
+                                </div>
+                            </div>
+
+                            <div class="eq" id="eq" aria-label="10-band equalizer"></div>
+                            <div class="eq-actions">
+                                <button class="btn small" id="reset" type="button">Reset</button>
+                                <button class="btn small" id="flat" type="button">Flat (0 dB)</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel viz" aria-label="Visualizer">
+                    <div class="canvas-wrap">
+                        <canvas id="canvas" aria-label="Spectrum visualizer"></canvas>
+                        <canvas id="osc" class="osc" aria-label="Waveform oscilloscope"></canvas>
+                        <div class="legend">
+                            <div class="dot"></div>
+                            <span id="vizLabel">Live Spectrum</span>
+                        </div>
+                    </div>
+                </section>
+            </main>
         </div>
+
+        <audio id="audio" crossorigin="anonymous"></audio>
+
+        <script src="script.js"></script>
     </body>
 </html>
