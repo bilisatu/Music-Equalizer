@@ -22,6 +22,7 @@
                 vizMode: document.getElementById("vizMode"),
                 oscToggle: document.getElementById("oscToggle"),
                 mic: document.getElementById("mic"),
+                forceDesktop: document.getElementById("forceDesktop"),
                 fs: document.getElementById("fs"),
                 canvas: document.getElementById("canvas"),
                 osc: document.getElementById("osc"),
@@ -39,6 +40,7 @@
                 vizMode: "meq.vizMode",
                 osc: "meq.osc",
                 mic: "meq.mic",
+                forceDesktop: "meq.forceDesktop",
                 preset: "meq.preset",
                 custom: "meq.customGains",
             };
@@ -337,6 +339,9 @@
                 el.vizLabel.textContent = VIZ.mode === "radial" ? "Radial Spectrum" : "Live Spectrum";
 
                 setToggle(el.mic, micEnabled);
+                const forced = !!readLS(STORAGE.forceDesktop, false);
+                setToggle(el.forceDesktop, forced);
+                document.documentElement.classList.toggle("force-desktop", forced);
             }
 
             // --- EQ UI + presets
@@ -1048,6 +1053,17 @@
             if (el.mic) {
                 el.mic.addEventListener("click", () => {
                     toggleMic();
+                });
+            }
+
+            if (el.forceDesktop) {
+                el.forceDesktop.addEventListener("click", () => {
+                    const current = !!readLS(STORAGE.forceDesktop, false);
+                    const next = !current;
+                    writeLS(STORAGE.forceDesktop, next);
+                    setToggle(el.forceDesktop, next);
+                    document.documentElement.classList.toggle("force-desktop", next);
+                    setMessage(next ? "Desktop view forced." : "Desktop view disabled.", "ok");
                 });
             }
 
