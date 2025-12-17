@@ -483,7 +483,8 @@
                 display: grid;
                 grid-template-columns: repeat(10, minmax(44px, 1fr));
                 gap: 10px;
-                padding: 12px 10px 10px;
+                padding: 12px 18px 10px;
+                justify-content: center;
                 border-radius: 14px;
                 background: rgba(0, 0, 0, 0.28);
                 border: 1px solid rgba(255, 255, 255, 0.08);
@@ -495,11 +496,18 @@
                 justify-items: center;
             }
 
+            .band {
+                align-items: center;
+            }
+
             .slider-wrap {
                 height: var(--eq-h);
                 display: grid;
                 place-items: center;
-                overflow: visible;
+                overflow: hidden;
+                box-sizing: border-box;
+                width: 100%;
+                padding-top: 6px;
             }
 
             .db {
@@ -514,12 +522,17 @@
             }
 
             .eq-range {
-                width: var(--eq-h);
-                height: 18px;
+                width: 18px;
+                height: var(--eq-h);
                 transform: rotate(-90deg);
+                transform-origin: center center;
+                display: block;
+                touch-action: pan-y;
+                -webkit-tap-highlight-color: transparent;
                 appearance: none;
                 background: transparent;
                 cursor: pointer;
+                margin: 0;
             }
 
             .eq-range::-webkit-slider-runnable-track {
@@ -705,6 +718,15 @@
                 /* Reduce visualizer height on mobile */
                 .canvas-wrap {
                     height: 260px;
+                }
+
+                /* Very small devices: compact EQ */
+                @media (max-width: 420px) {
+                    .eq {
+                        grid-template-columns: repeat(3, minmax(56px, 1fr));
+                        --eq-h: 180px;
+                    }
+                    .slider-wrap { height: var(--eq-h); }
                 }
                 }
                 .row .time,
