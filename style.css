@@ -664,12 +664,48 @@
 
             @media (max-width: 560px) {
                 .topbar {
-                    grid-template-columns: 1fr;
+                /* Make controls easier to touch */
+                .btn {
+                    padding: 12px 14px;
                 }
-                .row,
-                .volume {
-                    grid-template-columns: auto 1fr;
-                    grid-auto-rows: auto;
+                .toggle {
+                    padding: 12px 14px;
+                    border-radius: 14px;
+                }
+                .play {
+                    width: 72px;
+                    height: 72px;
+                }
+
+                /* EQ: fewer columns but larger sliders for touch */
+                .eq {
+                    grid-template-columns: repeat(5, minmax(56px, 1fr));
+                    --eq-h: 220px;
+                }
+                .slider-wrap {
+                    height: var(--eq-h);
+                }
+                .eq-range {
+                    width: var(--eq-h);
+                }
+                .eq-range::-webkit-slider-thumb {
+                    width: 24px;
+                    height: 24px;
+                }
+                .eq-range::-moz-range-thumb {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                /* Hide playlist on small screens to save space */
+                .playlist {
+                    display: none;
+                }
+
+                /* Reduce visualizer height on mobile */
+                .canvas-wrap {
+                    height: 260px;
+                }
                 }
                 .row .time,
                 .volume .time {
