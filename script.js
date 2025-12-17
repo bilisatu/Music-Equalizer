@@ -212,6 +212,14 @@
                 radialSegments: 96,
             };
 
+            const isMobileDevice = () => {
+                try {
+                    return (typeof window !== 'undefined') && (window.innerWidth <= 560 || navigator.maxTouchPoints > 0 || 'ontouchstart' in window);
+                } catch {
+                    return false;
+                }
+            };
+
             let peaks = new Float32Array(VIZ.bars);
             /** @type {{x:number,y:number,vx:number,vy:number,life:number}[]} */
             let particles = [];
@@ -497,9 +505,14 @@
                 const ctx = cMain.ctx;
                 const ctxOsc = cOsc ? cOsc.ctx : null;
 
+                // Mobile-friendly visualizer configuration
+                const mobile = isMobileDevice();
+                const barsCount = mobile ? Math.max(24, Math.floor(VIZ.bars / 2)) : VIZ.bars;
+                const fftSize = mobile ? 1024 : analyser.fftSize;
+                analyser.fftSize = fftSize;
                 const freq = new Uint8Array(analyser.frequencyBinCount);
                 const time = new Uint8Array(analyser.fftSize);
-                peaks = new Float32Array(VIZ.bars);
+                peaks = new Float32Array(barsCount);
                 particles = [];
 
                 const drawBars = (w, h) => {
@@ -519,7 +532,7 @@
                     ctx.fillStyle = "rgba(255, 235, 59, 0.06)";
                     fillRoundRect(ctx, Math.floor(w * 0.04), baseY + 8, Math.floor(w * 0.92), 2, 2);
 
-                    for (let i = 0; i < VIZ.bars; i++) {
+                    for (let i = 0; i < barsCount; i++) {
                         const t0 = i / VIZ.bars;
                         const t1 = (i + 1) / VIZ.bars;
                         const start = Math.floor(minBin * Math.pow(maxBin / minBin, t0));
@@ -548,7 +561,8 @@
                         ctx.fillStyle = g;
                         fillRoundRect(ctx, x, y, barW, peaks[i], Math.max(5, Math.floor(barW * 0.45)));
 
-                        if (norm > 0.58) spawnPeakParticles(x + barW * 0.5, y + 6, norm);
+                        // On mobile, spawn fewer particles to save CPU/battery
+                        if (norm > 0.58 && !mobile) spawnPeakParticles(x + barW * 0.5, y + 6, norm);
                     }
                     ctx.restore();
                 };
@@ -678,6 +692,35 @@
                 };
                 tick();
             }
+
+            // Swipe-to-seek for touch devices on the visualizer canvas
+            (function attachCanvasSwipe() {
+                if (!el.canvas) return;
+                let active = false;
+                let startX = 0;
+                let lastT = 0;
+
+                el.canvas.addEventListener('touchstart', (e) => {
+                    if (!el.audio.src || micEnabled) return;
+                    active = true;
+                    startX = e.touches[0].clientX;
+                    lastT = el.audio.currentTime || 0;
+                }, { passive: true });
+
+                el.canvas.addEventListener('touchmove', (e) => {
+                    if (!active) return;
+                    const dx = e.touches[0].clientX - startX;
+                    const pct = clamp(dx / (el.canvas.getBoundingClientRect().width || 1), -1, 1);
+                    if (!el.audio.duration || !Number.isFinite(el.audio.duration)) return;
+                    const seekTo = clamp(lastT + pct * Math.min(15, el.audio.duration * 0.1), 0, el.audio.duration);
+                    el.audio.currentTime = seekTo;
+                    el.time.textContent = `${fmtTime(el.audio.currentTime)} / ${fmtTime(el.audio.duration)}`;
+                }, { passive: true });
+
+                el.canvas.addEventListener('touchend', () => {
+                    active = false;
+                }, { passive: true });
+            })();
 
             function stopUILoop() {
                 if (rafUI) cancelAnimationFrame(rafUI);
