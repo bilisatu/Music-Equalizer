@@ -729,6 +729,22 @@
                     .slider-wrap { height: var(--eq-h); }
                 }
                 }
+
+            /* Force desktop look even on small screens when user enables it */
+            .force-desktop .playlist {
+                display: block !important;
+            }
+
+            .force-desktop .eq {
+                --eq-h: 196px !important;
+                grid-template-columns: repeat(10, minmax(44px, 1fr)) !important;
+                padding-left: 18px !important;
+                padding-right: 18px !important;
+            }
+
+            .force-desktop .canvas-wrap {
+                height: 420px !important;
+            }
                 .row .time,
                 .volume .time {
                     grid-column: 1 / -1;
